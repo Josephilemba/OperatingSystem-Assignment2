@@ -49,4 +49,9 @@ void edu_ps();
 
 void save_pcb_snapshot();
 
+
+void run_race_condition_demo();
+
+void run_mutex_demo();
+
 #endif
