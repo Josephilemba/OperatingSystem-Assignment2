@@ -57,7 +57,11 @@ int main()
 
     run_mutex_demo();
 
+    run_semaphore_demo();
+
     run_pipe_demo();
+
+    run_shared_memory_demo();
 
     printf("\nEduOS Simulation Finished.\n");
 

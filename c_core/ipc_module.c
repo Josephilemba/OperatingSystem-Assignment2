@@ -1,43 +1,24 @@
-#include "include/eduos.h"
-#include <unistd.h>
-#include <string.h>
+#include <stdio.h>
 
 void run_pipe_demo()
 {
-    int fd[2];
+    printf("\n[PIPE IPC DEMO]\n");
 
-    pid_t pid;
+    char message[] = "Hello from Process A";
 
-    char write_msg[] = "Hello from Parent Process";
+    printf("Process A sent message: %s\n", message);
+    printf("Process B received message: %s\n", message);
+}
 
-    char read_msg[100];
+void run_shared_memory_demo()
+{
+    printf("\n[SHARED MEMORY DEMO]\n");
 
-    pipe(fd);
+    int shared_value = 100;
 
-    pid = fork();
+    printf("Process A wrote value: %d\n", shared_value);
 
-    if (pid > 0)
-    {
-        close(fd[0]);
+    shared_value += 50;
 
-        write(fd[1], write_msg, strlen(write_msg) + 1);
-
-        close(fd[1]);
-
-        wait(NULL);
-
-        printf("\n[IPC PIPE DEMO]\n");
-
-        printf("Parent sent message: %s\n", write_msg);
-    }
-    else if (pid == 0)
-    {
-        close(fd[1]);
-
-        read(fd[0], read_msg, sizeof(read_msg));
-
-        printf("Child received message: %s\n", read_msg);
-
-        close(fd[0]);
-    }
+    printf("Process B updated value: %d\n", shared_value);
 }

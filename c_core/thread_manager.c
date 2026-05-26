@@ -1,5 +1,6 @@
 #include "include/eduos.h"
 #include <pthread.h>
+#include <semaphore.h>
 
 int shared_counter = 0;
 
@@ -73,4 +74,41 @@ void run_mutex_demo()
     printf("Expected Counter: 200000\n");
 
     printf("Actual Counter: %d\n", shared_counter);
+}
+sem_t semaphore;
+int semaphore_counter = 0;
+
+void *semaphore_increment(void *arg)
+{
+    for(int i = 0; i < 100000; i++)
+    {
+        sem_wait(&semaphore);
+
+        semaphore_counter++;
+
+        sem_post(&semaphore);
+    }
+
+    return NULL;
+}
+
+void run_semaphore_demo()
+{
+    pthread_t t1, t2;
+
+    semaphore_counter = 0;
+
+    sem_init(&semaphore, 0, 1);
+
+    pthread_create(&t1, NULL, semaphore_increment, NULL);
+    pthread_create(&t2, NULL, semaphore_increment, NULL);
+
+    pthread_join(t1, NULL);
+    pthread_join(t2, NULL);
+
+    sem_destroy(&semaphore);
+
+    printf("\n[SEMAPHORE SYNCHRONIZATION DEMO]\n");
+    printf("Expected Counter: 200000\n");
+    printf("Actual Counter: %d\n", semaphore_counter);
 }

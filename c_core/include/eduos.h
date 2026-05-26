@@ -56,4 +56,8 @@ void run_mutex_demo();
 
 void run_pipe_demo();
 
+void run_shared_memory_demo();
+
+void run_semaphore_demo();
+
 #endif
