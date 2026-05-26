@@ -53,7 +53,11 @@ int main()
 
     edu_ps();
 
-    printf("EduOS Simulation Finished.\n");
+   run_race_condition_demo();
+
+    run_mutex_demo();
+
+    printf("\nEduOS Simulation Finished.\n");
 
     return 0;
 }

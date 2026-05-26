@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -pthread -std=c11
 
 TARGET = eduos
 
-SRC = process_manager.c main_sim.c
+SRC = process_manager.c thread_manager.c main_sim.c
 
 all:
 	$(CC) $(CFLAGS) -o $(TARGET) $(SRC)
