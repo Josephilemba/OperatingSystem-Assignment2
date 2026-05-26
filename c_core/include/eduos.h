@@ -54,4 +54,6 @@ void run_race_condition_demo();
 
 void run_mutex_demo();
 
+void run_pipe_demo();
+
 #endif

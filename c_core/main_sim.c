@@ -57,6 +57,8 @@ int main()
 
     run_mutex_demo();
 
+    run_pipe_demo();
+
     printf("\nEduOS Simulation Finished.\n");
 
     return 0;
