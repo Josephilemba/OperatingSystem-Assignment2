@@ -5,7 +5,7 @@
 - Module Code: 351 CS 2104
 - Module Name: Operating Systems
 - Student Name: Joseph Ilemba
-- Registration Number: YOUR REG NUMBER
+- Registration Number: 25311351028
 
 ---
 
