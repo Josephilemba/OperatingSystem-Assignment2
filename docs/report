@@ -1,0 +1,741 @@
+# EDUOS OPERATING SYSTEM SIMULATOR REPORT
+
+## Module Information
+
+* Module Code: CS 2104
+* Module Name: Operating Systems
+* Project Title: EduOS Operating System Simulator
+* Student Name: Joseph Ilemba
+
+
+# 1. Introduction
+
+Operating systems are one of the most important components of a computer system because they manage hardware resources, coordinate software execution, and provide communication between the user and the machine. Modern operating systems perform several responsibilities such as process management, thread synchronization, memory management, scheduling, and interprocess communication.
+
+The EduOS Operating System Simulator project was developed to demonstrate how these important operating system concepts work in practice. The project combines the C programming language and Python programming language to simulate the behavior of an operating system environment.
+
+The C component focuses mainly on low-level system concepts such as process creation, thread management, synchronization, race conditions, mutexes, semaphores, and interprocess communication. The Python component focuses on CPU scheduling algorithms and system control integration.
+
+The purpose of this project is not to build a fully functional operating system, but rather to create a simulator that demonstrates how operating systems manage resources and coordinate tasks internally.
+
+The simulator was designed to help improve understanding of:
+
+* Process management
+* CPU scheduling
+* Thread synchronization
+* Interprocess communication
+* Race conditions
+* Shared memory
+* Pipes
+* Scheduling algorithms
+* System integration
+
+The project also demonstrates practical implementation skills in systems programming using structured modular development.
+
+
+# 2. Objectives of the Project
+
+The main objective of the EduOS project was to simulate important operating system functionalities in order to gain practical understanding of operating system concepts.
+
+The specific objectives were:
+
+1. To simulate process creation and termination.
+2. To implement a Process Control Block (PCB).
+3. To demonstrate process scheduling techniques.
+4. To simulate thread synchronization.
+5. To demonstrate race conditions and synchronization solutions.
+6. To implement interprocess communication techniques.
+7. To integrate C and Python components into one project.
+8. To improve understanding of concurrency and resource management.
+9. To apply operating system theory into practical implementation.
+
+
+# 3. Technologies Used
+
+The project used both low-level and high-level programming technologies.
+
+## 3.1 C Programming Language
+
+The C programming language was used to implement the core operating system simulations because C provides direct access to low-level memory operations and system resources. C is commonly used in operating system development due to its efficiency and performance.
+
+The C section of the project handled:
+
+* Process management
+* Thread management
+* Synchronization
+* IPC demonstrations
+* Shared data structures
+
+## 3.2 Python Programming Language
+
+Python was used to implement scheduling algorithms and integration logic because Python simplifies rapid development and visualization.
+
+Python handled:
+
+* CPU scheduling simulations
+* Scheduler execution
+* Controller integration
+
+## 3.3 POSIX Threads (Pthreads)
+
+POSIX threads were used to simulate multithreading and synchronization.
+
+Pthreads were used for:
+
+* Thread creation
+* Mutex synchronization
+* Race condition demonstration
+* Semaphore synchronization
+
+## 3.4 Makefile
+
+A Makefile was used to automate compilation of the C source files.
+
+This improved:
+
+* Build management
+* Compilation automation
+* Code organization
+
+
+# 4. Project Structure
+
+The EduOS project was divided into several directories to improve modularity and maintainability.
+
+## 4.1 c_core Directory
+
+This directory contains the core operating system simulation written in C.
+
+Files included:
+
+* main_sim.c
+* process_manager.c
+* thread_manager.c
+* ipc_module.c
+* Makefile
+
+This section is responsible for:
+
+* Process simulation
+* Thread simulation
+* Synchronization
+* IPC demonstrations
+
+## 4.2 python_scheduler Directory
+
+This directory contains CPU scheduling simulations written in Python.
+
+Files included:
+
+* scheduler_sim.py
+* gantt.py
+* sample_processes.csv
+
+This section handles:
+
+* FCFS scheduling
+* SJF scheduling
+* Priority scheduling
+* Round Robin scheduling
+
+## 4.3 controller Directory
+
+This directory contains the integration controller.
+
+The controller launches the scheduler and coordinates communication between components.
+
+## 4.4 docs Directory
+
+This directory stores project documentation and generated outputs.
+
+
+# 5. Process Management Implementation
+
+Process management is one of the most important responsibilities of an operating system. The EduOS simulator implemented several process management operations.
+
+## 5.1 Process Control Block (PCB)
+
+The Process Control Block is a data structure used by operating systems to store information about a process.
+
+In EduOS, each process contains:
+
+* Process ID (PID)
+* Process name
+* Process state
+* Priority
+* Burst time
+* Arrival time
+* Remaining time
+* Memory requirement
+* Thread count
+* Parent PID
+* Exit code
+* Creation time
+
+The PCB allows the operating system to monitor and manage process execution.
+
+The simulator stores all PCBs inside a global process table.
+
+## 5.2 Process Creation Using edu_fork()
+
+The simulator implements process creation using the function:
+
+```c
+pid_t edu_fork(PCB *parent)
+```
+
+This function simulates the behavior of the Unix fork() system call.
+
+The function performs the following operations:
+
+1. Checks whether the process table is full.
+2. Copies the parent process.
+3. Assigns a new PID.
+4. Changes the child state to READY.
+5. Records creation time.
+6. Stores the child inside the PCB table.
+7. Saves the process snapshot into JSON format.
+
+This demonstrates how operating systems duplicate processes during execution.
+
+## 5.3 Process Execution Using edu_exec()
+
+The function:
+
+```c
+void edu_exec(pid_t pid, char *prog_name)
+```
+
+simulates the exec() system call.
+
+The purpose of exec() is to replace the current process image with a new program.
+
+The EduOS implementation updates:
+
+* Process name
+* Burst time
+* Remaining time
+
+This demonstrates how a process loads a new program into memory.
+
+## 5.4 Process Termination Using edu_exit()
+
+The function:
+
+```c
+void edu_exit(pid_t pid, int exit_code)
+```
+
+simulates process termination.
+
+The function:
+
+* Changes the process state to TERMINATED
+* Stores the exit code
+* Updates the process table
+* Saves the PCB snapshot
+
+This demonstrates how operating systems release process resources after execution.
+
+## 5.5 Process Monitoring Using edu_ps()
+
+The function:
+
+```c
+void edu_ps()
+```
+
+prints all running processes in a tabular format.
+
+The process table displays:
+
+* PID
+* Process name
+* Process state
+* Priority
+
+This simulation resembles the Linux ps command used for process monitoring.
+
+## 5.6 Process Waiting Using edu_wait()
+
+The function:
+
+```c
+int edu_wait(pid_t parent_pid)
+```
+
+simulates parent-child synchronization.
+
+The parent process waits until the child process terminates.
+
+This demonstrates synchronization between related processes.
+
+
+# 6. Thread Management and Synchronization
+
+Modern operating systems support multithreading to improve performance and concurrency. The EduOS simulator demonstrates several important threading concepts.
+
+## 6.1 Race Condition Demonstration
+
+A race condition occurs when multiple threads access shared data simultaneously without proper synchronization.
+
+The EduOS simulator demonstrates this using:
+
+```c
+void *race_increment(void *arg)
+```
+
+Two threads increment the same shared counter at the same time.
+
+Because there is no synchronization:
+
+* Threads interfere with each other
+* Data becomes inconsistent
+* Final results become unpredictable
+
+The expected value is 200000, but the actual value may be smaller due to thread conflicts.
+
+This demonstrates why synchronization is important in concurrent systems.
+
+## 6.2 Mutex Synchronization
+
+To solve the race condition problem, the simulator implements mutex locks.
+
+A mutex ensures that only one thread accesses a shared resource at a time.
+
+The mutex demonstration uses:
+
+```c
+pthread_mutex_lock(&counter_mutex);
+```
+
+and:
+
+```c
+pthread_mutex_unlock(&counter_mutex);
+```
+
+This ensures safe access to the shared counter.
+
+The final counter value becomes correct because thread execution is synchronized.
+
+This demonstrates:
+
+* Mutual exclusion
+* Critical sections
+* Safe shared resource access
+
+## 6.3 Semaphore Synchronization
+
+The simulator also demonstrates semaphore synchronization.
+
+A semaphore controls access to shared resources using signaling mechanisms.
+
+The implementation uses:
+
+```c
+sem_wait(&semaphore);
+```
+
+and:
+
+```c
+sem_post(&semaphore);
+```
+
+The semaphore ensures that threads increment the shared counter safely.
+
+This demonstrates:
+
+* Resource coordination
+* Controlled thread access
+* Synchronization using semaphores
+
+---
+
+# 7. Interprocess Communication (IPC)
+
+Interprocess Communication allows processes to exchange data and coordinate activities.
+
+The EduOS simulator demonstrates two IPC techniques.
+
+## 7.1 Pipe Communication
+
+The simulator demonstrates pipe-based communication using the function:
+
+```c
+void run_pipe_demo()
+```
+
+In the simulation:
+
+* Process A sends a message
+* Process B receives the message
+
+Pipes are commonly used in Unix systems for communication between related processes.
+
+This demonstrates:
+
+* Data transfer
+* Parent-child communication
+* Sequential process communication
+
+## 7.2 Shared Memory Communication
+
+The simulator also demonstrates shared memory communication.
+
+Shared memory allows multiple processes to access the same memory region.
+
+The simulation shows:
+
+* Process A writing a value
+* Process B modifying the value
+
+Shared memory is faster than pipes because processes directly access the same memory location.
+
+This demonstrates:
+
+* Shared resource access
+* Fast IPC mechanisms
+* Cooperative process interaction
+
+# 8. CPU Scheduling Algorithms
+
+CPU scheduling determines how processes are assigned CPU execution time.
+
+The EduOS simulator implements four scheduling algorithms using Python.
+
+## 8.1 First Come First Serve (FCFS)
+
+FCFS executes processes in the order they arrive.
+
+Characteristics:
+
+* Simple implementation
+* Non-preemptive
+* Processes execute sequentially
+
+Advantages:
+
+* Easy to implement
+* Fair based on arrival order
+
+Disadvantages:
+
+* Long waiting time
+* Convoy effect
+* Poor response time
+
+The simulator calculates execution intervals for each process.
+
+## 8.2 Shortest Job First (SJF)
+
+SJF executes the process with the smallest burst time first.
+
+Characteristics:
+
+* Optimizes average waiting time
+* Efficient for short processes
+
+Advantages:
+
+* Better turnaround time
+* Improved efficiency
+
+Disadvantages:
+
+* Starvation may occur
+* Burst prediction may be difficult
+
+The simulator sorts processes based on burst time before execution.
+
+## 8.3 Priority Scheduling
+
+Priority scheduling executes processes according to priority level.
+
+Characteristics:
+
+* Higher priority processes execute first
+* Useful for critical tasks
+
+Advantages:
+
+* Supports important processes
+* Flexible scheduling control
+
+Disadvantages:
+
+* Low priority starvation
+* Requires proper priority management
+
+The simulator sorts processes according to priority values.
+
+## 8.4 Round Robin Scheduling
+
+Round Robin scheduling allocates CPU time using time slices called quantum.
+
+Characteristics:
+
+* Preemptive scheduling
+* Fair CPU allocation
+* Suitable for multitasking systems
+
+Advantages:
+
+* Good response time
+* Fair process execution
+* Prevents starvation
+
+Disadvantages:
+
+* High context switching overhead
+* Performance depends on quantum size
+
+The simulator repeatedly cycles through processes until all processes complete execution.
+
+
+# 9. System Controller Integration
+
+The project includes a Python controller named:
+
+```python
+main_controller.py
+```
+
+The controller acts as an integration layer.
+
+Its responsibilities include:
+
+* Launching scheduling simulations
+* Coordinating execution
+* Managing subprocess communication
+
+The controller automatically executes the scheduler using Python system commands.
+
+This demonstrates how operating systems coordinate multiple subsystems together.
+
+
+# 10. JSON Process Snapshot System
+
+The simulator includes a process snapshot mechanism.
+
+The function:
+
+```c
+save_pcb_snapshot()
+```
+
+stores PCB data inside a JSON file named:
+
+```text
+pcb_snapshot.json
+```
+
+The JSON file records:
+
+* PID
+* Name
+* State
+* Priority
+* Burst time
+* Arrival time
+* Remaining time
+* Memory requirement
+* Thread count
+
+This feature demonstrates:
+
+* Persistent process monitoring
+* Data serialization
+* System state tracking
+
+The JSON output can also be used for visualization and debugging.
+
+
+# 11. Build and Compilation Process
+
+The project uses a Makefile for automated compilation.
+
+The compilation process includes:
+
+1. Compiling source files.
+2. Linking required libraries.
+3. Generating the executable.
+
+The build command used is:
+
+```bash
+make all
+```
+
+The executable generated is:
+
+```text
+eduos.exe
+```
+
+The project can then be executed using:
+
+```bash
+./eduos
+```
+
+The Python scheduler is executed separately using:
+
+```bash
+python scheduler_sim.py
+```
+
+
+# 12. Challenges Encountered During Development
+
+Several challenges were encountered during development of the project.
+
+## 12.1 Thread Synchronization Problems
+
+During multithreading implementation, inconsistent results occurred because multiple threads accessed shared variables simultaneously.
+
+This caused:
+
+* Incorrect counter values
+* Data inconsistency
+* Unpredictable execution
+
+### Solution
+
+Mutexes and semaphores were implemented to synchronize thread access.
+
+This solved the race condition problem.
+
+## 12.2 Process Coordination
+
+Managing parent-child process relationships required careful tracking of process states.
+
+### Solution
+
+Parent PID fields and PCB structures were used to maintain process hierarchy.
+
+## 12.3 Integration Between C and Python
+
+Integrating low-level C components with Python scheduling modules required proper execution coordination.
+
+### Solution
+
+A Python controller was implemented to launch and coordinate scheduling operations.
+
+## 12.4 Data Persistence
+
+Tracking process state changes over time required a storage mechanism.
+
+### Solution
+
+JSON serialization was implemented using PCB snapshot files.
+
+
+# 13. Learning Outcomes
+
+This project provided practical understanding of many operating system concepts.
+
+The major learning outcomes include:
+
+* Understanding process creation and management
+* Understanding process states and PCB structures
+* Understanding CPU scheduling algorithms
+* Understanding synchronization techniques
+* Understanding race conditions
+* Understanding thread coordination
+* Understanding IPC mechanisms
+* Understanding concurrency problems
+* Improving C programming skills
+* Improving Python integration skills
+* Understanding modular software design
+
+The project also improved debugging and problem-solving abilities.
+
+
+# 14. Advantages of the EduOS Simulator
+
+The EduOS simulator provides several advantages:
+
+1. Demonstrates practical operating system concepts.
+2. Combines low-level and high-level programming.
+3. Provides modular code organization.
+4. Simulates real operating system behavior.
+5. Demonstrates synchronization clearly.
+6. Supports multiple scheduling algorithms.
+7. Improves understanding of concurrency.
+8. Provides reusable educational code.
+
+
+# 15. Limitations of the System
+
+Although the simulator demonstrates important operating system concepts, it also has limitations.
+
+The limitations include:
+
+1. It is not a real operating system kernel.
+2. Memory management is simplified.
+3. Process scheduling is simulated rather than real-time.
+4. IPC demonstrations are simplified.
+5. There is no virtual memory implementation.
+6. There is no actual hardware-level interaction.
+7. Security and protection mechanisms are limited.
+
+Despite these limitations, the simulator successfully demonstrates the core concepts of operating systems.
+
+
+# 16. Future Improvements
+
+Several improvements can be added in future versions of the project.
+
+Possible future enhancements include:
+
+1. Implementing virtual memory management.
+2. Adding deadlock detection algorithms.
+3. Implementing paging and segmentation.
+4. Adding graphical user interfaces.
+5. Implementing real-time scheduling.
+6. Adding disk scheduling algorithms.
+7. Implementing file system simulation.
+8. Adding network communication modules.
+9. Implementing process priority aging.
+10. Adding dynamic process generation.
+
+These improvements would make the simulator more realistic and advanced.
+
+
+# 17. Conclusion
+
+The EduOS Operating System Simulator successfully demonstrates important operating system concepts through practical implementation using C and Python.
+
+The project implemented:
+
+* Process management
+* Process creation and termination
+* Thread synchronization
+* Race condition handling
+* Mutex synchronization
+* Semaphore synchronization
+* Interprocess communication
+* CPU scheduling algorithms
+* System integration
+
+The simulator provides a strong educational platform for understanding how operating systems coordinate processes, threads, and system resources.
+
+The project also demonstrates the importance of synchronization mechanisms in concurrent systems and shows how scheduling algorithms affect process execution.
+
+Through this project, practical knowledge of operating system design and systems programming was gained. The combination of theory and implementation helped improve understanding of core operating system principles.
+
+Overall, the EduOS simulator achieved its objectives and successfully demonstrated the internal behavior of major operating system components.
+
+---
+
+# 18. References
+
+1. Silberschatz, A., Galvin, P. B., & Gagne, G. Operating System Concepts.
+2. POSIX Threads Documentation.
+3. Linux Manual Pages.
+4. Python Official Documentation.
+5. GeeksforGeeks Operating System Tutorials.
+6. Operating Systems Course Notes.
+7. GNU GCC Documentation.
